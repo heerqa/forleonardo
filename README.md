@@ -2,7 +2,7 @@
 ### What is this repository for? ###
 
 * This project is for showcasing my java skills to Leonardo so that I can have long lasting professional relationship and work together on several projects
-* 
+
 
 ### How do I get set up the env? ###
 
