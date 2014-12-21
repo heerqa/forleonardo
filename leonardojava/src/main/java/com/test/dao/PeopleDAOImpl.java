@@ -12,11 +12,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.test.entity.PeopleLinked;
-import com.test.entity.ProjectList;
+import com.test.entity.People;
+
 
 @Repository
-public class PeopleLinkedDAOImpl implements PeopleLinkedDAO{
+public class PeopleDAOImpl implements PeopleDAO{
 	
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
@@ -42,9 +42,9 @@ public class PeopleLinkedDAOImpl implements PeopleLinkedDAO{
 
 
 	@Override
-	public List<PeopleLinked> getPeopleLink() {
-		List<PeopleLinked> peopleLinked =new ArrayList<PeopleLinked>();
-		String sql="select * from peoplelinked";
+	public List<People> getPeopleLink() {
+		List<People> peopleLinked =new ArrayList<People>();
+		String sql="select * from people";
 		
 		peopleLinked=jdbcTemplate.query(sql, new PeopleLinkedRowMapper());
 
@@ -52,27 +52,27 @@ public class PeopleLinkedDAOImpl implements PeopleLinkedDAO{
 	}
 
 	@Override
-	public void insertPeopleLink(PeopleLinked peopleLinked) {
-		String sql="insert into peoplelinked(projectname,name) values(?,?)";
-		jdbcTemplate.update(sql, new Object[]{peopleLinked.getProjectName(), peopleLinked.getName()});
+	public void insertPeopleLink(People people) {
+		String sql="insert into people(projectname,firstname, lastname) values(?,?,?)";
+		jdbcTemplate.update(sql, new Object[]{people.getProjectName(), people.getFirstName(),people.getLastName()});
 	
 		
 	}
 
 	@Override
-	public void updatePeopleLink(PeopleLinked peopleLinked) {
+	public void updatePeopleLink(People peopleLinked) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deletPeopleLink(PeopleLinked peopleLinked) {
+	public void deletPeopleLink(People peopleLinked) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deletAllPeopleLink(PeopleLinked peopleLinked) {
+	public void deletAllPeopleLink(People peopleLinked) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -83,13 +83,13 @@ public class PeopleLinkedDAOImpl implements PeopleLinkedDAO{
 		return null;
 	}
 
-	private static final class PeopleLinkedRowMapper implements RowMapper<PeopleLinked>{
+	private static final class PeopleLinkedRowMapper implements RowMapper<People>{
 
-		public PeopleLinked mapRow(ResultSet rs, int rowNum) throws SQLException {
-			PeopleLinked peopleLinked=new PeopleLinked();
+		public People mapRow(ResultSet rs, int rowNum) throws SQLException {
+			People peopleLinked=new People();
 			peopleLinked.setProjectName(rs.getString("projectname"));
-			peopleLinked.setName(rs.getString("name"));
-			
+			peopleLinked.setFirstName(rs.getString("firstname"));
+			peopleLinked.setLastName(rs.getString("lastname"));
 			return peopleLinked;
 		}
 		
