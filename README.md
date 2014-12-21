@@ -9,7 +9,7 @@
 * Install JDK
 * Install Maven(Please make sure that system variables are set properly)
 
-### About Projects ###
+### About Test Project ###
 
 Java test
 
