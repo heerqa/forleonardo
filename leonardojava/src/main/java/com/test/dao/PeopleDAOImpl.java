@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.test.entity.People;
+import com.test.entity.ProjectList;
 
 
 @Repository
@@ -42,19 +43,19 @@ public class PeopleDAOImpl implements PeopleDAO{
 
 
 	@Override
-	public List<People> getPeopleLink() {
+	public List<People> getPeopleLink(ProjectList projectList) {
 		List<People> peopleLinked =new ArrayList<People>();
-		String sql="select * from people";
+		String sql="select * from people where projectname=?";
 		
-		peopleLinked=jdbcTemplate.query(sql, new PeopleLinkedRowMapper());
+		peopleLinked=jdbcTemplate.query(sql, new Object[]{projectList.getProjectName()}, new PeopleLinkedRowMapper());
 
 		return peopleLinked;
 	}
 
 	@Override
 	public void insertPeopleLink(People people) {
-		String sql="insert into people(projectname,firstname, lastname) values(?,?,?)";
-		jdbcTemplate.update(sql, new Object[]{people.getProjectName(), people.getFirstName(),people.getLastName()});
+		String sql="insert into people(projectname,completename) values(?,?)";
+		jdbcTemplate.update(sql, new Object[]{people.getProjectName(), people.getCompleteName()});
 	
 		
 	}
@@ -77,21 +78,21 @@ public class PeopleDAOImpl implements PeopleDAO{
 		
 	}
 
-	@Override
-	public String getPeopleLink(String porjectName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	private static final class PeopleLinkedRowMapper implements RowMapper<People>{
 
 		public People mapRow(ResultSet rs, int rowNum) throws SQLException {
 			People peopleLinked=new People();
 			peopleLinked.setProjectName(rs.getString("projectname"));
-			peopleLinked.setFirstName(rs.getString("firstname"));
-			peopleLinked.setLastName(rs.getString("lastname"));
+			peopleLinked.setCompleteName(rs.getString("completename"));
+		
 			return peopleLinked;
 		}
 		
 	}
+
+
+
+	
 }

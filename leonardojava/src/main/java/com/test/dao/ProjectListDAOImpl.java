@@ -50,18 +50,32 @@ public class ProjectListDAOImpl implements ProjectListDAO{
 		List<ProjectList> projectList =new ArrayList<ProjectList>();
 		String sql="select * from projectlist";
 		
-		projectList=jdbcTemplate.query(sql, new ProjectListRowMapper());
+		projectList=jdbcTemplate.query(sql, new ProjectListAllRowMapper());
 
 		return projectList;
 	}
 	
+	private static final class ProjectListAllRowMapper implements RowMapper<ProjectList>{
+
+		public ProjectList mapRow(ResultSet rs, int rowNum) throws SQLException {
+			ProjectList projectList=new ProjectList();
+			projectList.setId(rs.getInt("id"));
+			projectList.setProjectName(rs.getString("projectname"));
+			projectList.setProjectDescrition(rs.getString("projectdescription"));
+			
+			
+			return projectList;
+		}
+		
+	}
 	private static final class ProjectListRowMapper implements RowMapper<ProjectList>{
 
 		public ProjectList mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ProjectList projectList=new ProjectList();
-			projectList.setProjectName(rs.getString("(projectname"));
-			projectList.setProjectDescrition(rs.getString("(projectdescription"));
-			projectList.setStatus(rs.getBoolean("status"));
+			projectList.setId(rs.getInt("id"));
+			projectList.setProjectName(rs.getString("projectname"));
+			projectList.setProjectDescrition(rs.getString("projectdescription"));
+			projectList.setAll_users(rs.getString("all_users"));
 			
 			return projectList;
 		}
@@ -98,6 +112,17 @@ public class ProjectListDAOImpl implements ProjectListDAO{
 	public String getProjectList(String porjectName) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<ProjectList> getProjectListWithUser() {
+		List<ProjectList> projectList =new ArrayList<ProjectList>();
+		String sql="select projectlist.projectname,projectlist.projectdescription, array_to_string(array_agg(distinct people.completename),',')" 
+		+ "as all_users from projectlist inner join "+"people on projectlist.projectname=people.projectname where status='t' group by projectlist.projectname,projectlist.projectdescription";
+		
+		projectList=jdbcTemplate.query(sql, new ProjectListRowMapper());
+
+		return projectList;
 	}
 
 }

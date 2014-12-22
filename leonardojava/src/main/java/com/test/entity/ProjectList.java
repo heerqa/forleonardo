@@ -16,6 +16,14 @@ public class ProjectList {
 	private String projectDescrition;
 	private boolean status;
 	
+	private String all_users;
+	
+	public String getAll_users() {
+		return all_users;
+	}
+	public void setAll_users(String all_users) {
+		this.all_users = all_users;
+	}
 	public int getId() {
 		return id;
 	}
@@ -60,6 +68,13 @@ public class ProjectList {
 		this.projectDescrition = projectDescrition;
 	
 		
+	}
+	public ProjectList(String projectName, String projectDescrition,
+			String all_users) {
+		super();
+		this.projectName = projectName;
+		this.projectDescrition = projectDescrition;
+		this.all_users = all_users;
 	}
 	
 	

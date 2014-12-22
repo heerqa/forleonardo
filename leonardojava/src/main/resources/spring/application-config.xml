@@ -9,6 +9,8 @@
          <context:component-scan
             base-package="org.springframework.samples.service"/>  -->
             
-            <import resource="datasource-config.xml"/>
+ 
+ 
+ <import resource="datasource-config.xml"/>
 
 </beans>
