@@ -94,5 +94,15 @@ public class PeopleDAOImpl implements PeopleDAO{
 
 
 
+	@Override
+	public List<People> getAllPeople() {
+		List<People> allpeople=new ArrayList<People>();
+		String sql="select * from people";
+		allpeople=jdbcTemplate.query(sql, new PeopleLinkedRowMapper());
+		return allpeople;
+	}
+
+
+
 	
 }

@@ -13,7 +13,7 @@ public interface PeopleDAO {
 	public void updatePeopleLink(People people);
 	public void deletPeopleLink(People people);
 	public void deletAllPeopleLink(People people);
-
+	public List<People> getAllPeople();
 
 
 }

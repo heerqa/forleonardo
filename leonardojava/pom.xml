@@ -37,7 +37,7 @@
 	</properties>
 	
 	<dependencies>
-			
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -62,12 +62,7 @@
 			<version>${apache.tiles.version}</version>
 		</dependency>
 		
-		<!-- Spring MVC --><dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-core</artifactId>
-    <version>${spring-framework.version}</version>
-</dependency>
-		
+		<!-- Spring MVC -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -148,12 +143,8 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
+
+		
 
 		
 		<!-- Test Artifacts -->
@@ -185,10 +176,11 @@
 	  			<artifactId>maven-compiler-plugin</artifactId>
 	  			<version>3.1</version>
 	  			<configuration>
-	  			<source>1.7</source>
-	  			<target>1.7</target>
+	  			<source>1.6</source>
+	  			<target>1.6</target>
 	  			</configuration>
 	  		</plugin>
 			</plugins>
 	</build>
 </project>
+   
