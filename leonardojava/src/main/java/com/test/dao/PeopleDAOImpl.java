@@ -54,8 +54,8 @@ public class PeopleDAOImpl implements PeopleDAO{
 
 	@Override
 	public void insertPeopleLink(People people) {
-		String sql="insert into people(projectname,completename) values(?,?)";
-		jdbcTemplate.update(sql, new Object[]{people.getProjectName(), people.getCompleteName()});
+		String sql="insert into people(projectname,firstname, lastname, completename) values(?,?,?,?)";
+		jdbcTemplate.update(sql, new Object[]{people.getProjectName(),people.getFirstName(),people.getFirstName(), people.getCompleteName()});
 	
 		
 	}
@@ -67,9 +67,9 @@ public class PeopleDAOImpl implements PeopleDAO{
 	}
 
 	@Override
-	public void deletPeopleLink(People peopleLinked) {
-		// TODO Auto-generated method stub
-		
+	public void deletPeopleLink(People people) {
+		String sql="delete from people where projectname=? and firstname=? and lastname=?";
+		jdbcTemplate.update(sql, new Object[]{people.getProjectName(), people.getFirstName(),people.getLastName()});
 	}
 
 	@Override
@@ -85,6 +85,8 @@ public class PeopleDAOImpl implements PeopleDAO{
 		public People mapRow(ResultSet rs, int rowNum) throws SQLException {
 			People peopleLinked=new People();
 			peopleLinked.setProjectName(rs.getString("projectname"));
+			peopleLinked.setFirstName(rs.getString("firstname"));
+			peopleLinked.setLastName(rs.getString("lastname"));
 			peopleLinked.setCompleteName(rs.getString("completename"));
 		
 			return peopleLinked;

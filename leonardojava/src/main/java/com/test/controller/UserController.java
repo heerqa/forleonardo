@@ -71,9 +71,23 @@ public class UserController {
 	
 		people.setProjectName(projectListDAOImpl.getProjectList(id).getProjectName());
 		people.setCompleteName(request.getParameter("selecteuser"));
+		String[] splitname=request.getParameter("selecteuser").split(" ");
+		people.setFirstName(splitname[0]);
+		people.setLastName(splitname[1]);
 		peopleDAOImpl.insertPeopleLink(people);
 		
 		return "user added";
+		
+	}
+	
+	@RequestMapping(value="{id}/{firstName}/{lastName}/deleteuser", method=RequestMethod.GET)
+	public String removeUser(@PathVariable("id") int id, @PathVariable("firstName") String firstname,@PathVariable("lastName") String lastname){
+		People people=new People();
+		people.setProjectName(projectListDAOImpl.getProjectList(id).getProjectName());
+		people.setFirstName(firstname);
+		people.setLastName(lastname);
+		peopleDAOImpl.deletPeopleLink(people);
+		return "redirect:"+"/"+id+"/projectedit.html";
 		
 	}
 

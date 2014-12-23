@@ -90,7 +90,13 @@
 <c:forEach items="${people}" var="people">
 <tr>
 <td>${people.completeName}</a ></td>
-<td><button type="button" class="btn"><a href="${ projectList.id}/projectedit.html">Remove</a></button> </td>
+<td>
+ 
+<form action ="${people.firstName}/${people.lastName}/deleteuser.html">
+	<button type="submit" >Remove</button>
+</form>
+
+</td>
 
 </c:forEach>
 <tbody>
