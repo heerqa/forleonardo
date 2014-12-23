@@ -57,8 +57,10 @@ public class UserController {
 	public String projectList(Model model,@PathVariable("id") int id){
 		ProjectList projectList=projectListDAOImpl.getProjectList(id);
 		List<People> people=peopleDAOImpl.getPeopleLink(projectList);
+		List<People> allpeople=peopleDAOImpl.getAllPeople();
 		model.addAttribute("projectList", projectList);
 		model.addAttribute("people", people);
+		model.addAttribute("allpeople", allpeople);
 		return "projectedit";
 		
 	}

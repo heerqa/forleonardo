@@ -74,10 +74,14 @@
 <tr>
 
 <th>Complete Name</th>
-<th><button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-    Dropdown
-    <span class="caret"></span>
-  </button></th>
+<th>
+<select class="form-control">
+ <c:forEach items="${allpeople}" var="allpeople">
+        <option value="${allpeople.completeName}">${allpeople.completeName}</option>
+    </c:forEach>
+    
+</select>
+  </th>
 
 </thead>
 
