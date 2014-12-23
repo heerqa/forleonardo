@@ -14,6 +14,8 @@ public interface ProjectListDAO {
 	public void deletAllProjectList(ProjectList projectList);
 	public String getProjectList(String porjectName);
 	
+	public ProjectList getProjectList(int id);
+	
 
 
 }

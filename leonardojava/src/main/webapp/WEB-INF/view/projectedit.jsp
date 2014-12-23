@@ -37,7 +37,7 @@
       <!-- Username -->
       <label class="control-label"  for="projectname">Project Name</label>
       <div class="controls ">
-        <input type="text" id="projectname" name="projectname"  placeholder="text" class="input-xlarge">
+        <input type="text" id="projectname" name="projectname"  placeholder="${projectList.projectName}" } class="input-xlarge">
     
       </div>
     </div>
@@ -46,7 +46,7 @@
       <!-- Username -->
       <label class="control-label"  for="projectdesc">Project Description</label>
       <div class="controls">
-        <input type="text" id="projectdesc" name="projectdesc" placeholder="text" class="input-xlarge">
+        <input type="text" id="projectdesc" name="projectdesc" placeholder="${projectList.projectDescrition}" class="input-xlarge">
      
       </div>
     </div>
@@ -79,12 +79,15 @@
     <span class="caret"></span>
   </button></th>
 
-
+</thead>
 
 </tr>
+<c:forEach items="${people}" var="people">
+<tr>
+<td>${people.completeName}</a ></td>
+<td><button type="button" class="btn"><a href="${ projectList.id}/projectedit.html">Remove</a></button> </td>
 
-
-</thead>
+</c:forEach>
 <tbody>
 </tbody>
 </table>

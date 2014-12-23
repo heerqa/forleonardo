@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.apache.velocity.runtime.directive.Foreach;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -22,24 +23,26 @@ public class ProjectListDAOImplTest {
 	ApplicationContext ctx=new ClassPathXmlApplicationContext("classpath:spring/application-config.xml");
 	ProjectListDAOImpl projectListDAOImpl=ctx.getBean("projectListDAOImpl", ProjectListDAOImpl.class);
 	PeopleDAOImpl peopleDAOImpl=ctx.getBean("peopleDAOImpl", PeopleDAOImpl.class);
+	@Ignore
 	@Test
 	public void testinsertintoProjectList() {
 	
 		projectListDAOImpl.insertProjectList(projectList);
 	}
-	
+	@Ignore
 	@Test
 	public void testinsertPeopleLink(){
 		peopleDAOImpl.insertPeopleLink(peopleLinked);
 	}
 	
+	@Ignore
 	@Test
 	public void testgetPeopleLink(){
 		
 		
 		System.out.println(peopleDAOImpl.getPeopleLink(projectList).size());
 	}
-	
+	@Ignore
 	@Test
 	public void testgetProjectListWithUser(){
 		List<ProjectList> projectlist=projectListDAOImpl.getProjectListWithUser();
@@ -51,7 +54,7 @@ public class ProjectListDAOImplTest {
 		
 		
 	}
-	
+	@Ignore
 	@Test
 	public void testgetProjectList(){
 		List<ProjectList> projectlist=projectListDAOImpl.getProjectList();
@@ -60,6 +63,18 @@ public class ProjectListDAOImplTest {
 			System.out.println(projectList2.getId()+""+projectList2.getProjectName()+" "+projectList2.getProjectDescrition() );
 			
 		}
+		
+		
+	}
+	@Ignore
+	@Test
+	public void testgetSingleProjectList(){
+		ProjectList projectlist=projectListDAOImpl.getProjectList(54);
+		
+		
+			System.out.println(projectlist.getId()+""+projectlist.getProjectName()+" "+projectlist.getProjectDescrition() );
+			
+		
 		
 		
 	}

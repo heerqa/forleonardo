@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
 import com.test.dao.PeopleDAOImpl;
 import com.test.dao.ProjectListDAOImpl;
+import com.test.entity.People;
 import com.test.entity.ProjectList;
 
 @Controller
@@ -35,6 +37,7 @@ public class UserController {
 		List<ProjectList> projectListall=projectListDAOImpl.getProjectList();
 		model.addAttribute("projectList", projectList);	
 		model.addAttribute("projectListall", projectListall);
+		
 		return "main";
 		
 	}
@@ -50,9 +53,12 @@ public class UserController {
 		
 	}
 	
-	@RequestMapping("/projectedit")
-	public String projectList(Model model){
-	
+	@RequestMapping(value="{id}/projectedit", method=RequestMethod.GET)
+	public String projectList(Model model,@PathVariable("id") int id){
+		ProjectList projectList=projectListDAOImpl.getProjectList(id);
+		List<People> people=peopleDAOImpl.getPeopleLink(projectList);
+		model.addAttribute("projectList", projectList);
+		model.addAttribute("people", people);
 		return "projectedit";
 		
 	}
