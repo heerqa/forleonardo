@@ -64,6 +64,18 @@ public class UserController {
 		return "projectedit";
 		
 	}
+	
+	@RequestMapping(value="{id}/addprojectrouser", method=RequestMethod.POST)
+	public @ResponseBody String addProjectToUser(HttpServletRequest request, HttpServletResponse response,@PathVariable("id") int id ){
+		People people=new People();
+	
+		people.setProjectName(projectListDAOImpl.getProjectList(id).getProjectName());
+		people.setCompleteName(request.getParameter("selecteuser"));
+		peopleDAOImpl.insertPeopleLink(people);
+		
+		return "user added";
+		
+	}
 
 
 	

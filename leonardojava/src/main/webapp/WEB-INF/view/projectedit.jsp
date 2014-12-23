@@ -75,7 +75,8 @@
 
 <th>Complete Name</th>
 <th>
-<select class="form-control">
+<select class="form-control" onchange="addPeopleToProject()" id="userlist">
+ <option value="">Add People to this project</option>
  <c:forEach items="${allpeople}" var="allpeople">
         <option value="${allpeople.completeName}">${allpeople.completeName}</option>
     </c:forEach>
@@ -119,5 +120,26 @@ function saveProjectDetails(){
 		     }  
 		    });  
 		
+}
+
+function addPeopleToProject(){
+	
+	
+	var selecteuser=$( "#userlist" ).val();
+	
+	$.ajax({  
+	     type : "POST",   
+	     url : "addprojectrouser.html",   
+	     data : "selecteuser=" + selecteuser,
+	       
+	     success : function(response) {  
+	    	 
+	      alert(response);   
+	       location.reload() 
+	     },  
+	     error : function(e) {  
+	      alert('Error: ' + e);   
+	     }  
+	    });  
 }
 </script>

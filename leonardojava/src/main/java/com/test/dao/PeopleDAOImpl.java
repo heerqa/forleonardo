@@ -97,11 +97,21 @@ public class PeopleDAOImpl implements PeopleDAO{
 	@Override
 	public List<People> getAllPeople() {
 		List<People> allpeople=new ArrayList<People>();
-		String sql="select * from people";
-		allpeople=jdbcTemplate.query(sql, new PeopleLinkedRowMapper());
+		String sql="select completename from people group by completename;";
+		allpeople=jdbcTemplate.query(sql, new ALLPeopleRowMapper());
 		return allpeople;
 	}
+	private static final class ALLPeopleRowMapper implements RowMapper<People>{
 
+		public People mapRow(ResultSet rs, int rowNum) throws SQLException {
+			People peopleLinked=new People();
+			
+			peopleLinked.setCompleteName(rs.getString("completename"));
+		
+			return peopleLinked;
+		}
+		
+	}
 
 
 	
