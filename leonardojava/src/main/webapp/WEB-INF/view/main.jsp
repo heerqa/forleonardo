@@ -82,21 +82,10 @@
 <tr>
 <td><a href="${ projectList.id}/projectedit.html">${projectList.projectName}</a ></td>
 <td><a href="${ projectList.id}/projectedit.html">${projectList.projectDescrition}</a> </td>
-<td>${projectList.all_users} </td>
+<td>${projectList.completename} </td>
 </c:forEach>
 
-<%-- 
 
-
-<c:forEach items="${projectListall}" var="projectListall">
-<tr>
-<td><a href="${ projectListall.id}/projectedit.html">${projectListall.projectName}</a > </td>
-<td><a href="${ projectListall.id}/projectedit.html">${projectListall.projectDescrition} </a ></td>
-<td> </td>
-</tr>
-
-</c:forEach>
- --%>
 <tbody>
 </tbody>
 </table>

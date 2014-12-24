@@ -59,13 +59,15 @@
       <!-- Button -->
       <div class="controls">
       	<br>
-        <button type="button" id="Save" class="btn btn-success" onClick=saveProjectDetails() >Save</button>
+        <button type="button" id="Save" class="btn btn-success" onClick=updateProjectDetails() >Edit</button>
       </div>
     </div>
   </fieldset>
 </form>
 
+<div id="editstatus">
 
+</div>
 <div>
 <br>
  <legend class="">People Linked to the project</legend>
@@ -109,17 +111,18 @@
 
 <script type="text/javascript">
 
-function saveProjectDetails(){
+function updateProjectDetails(){
 	var projectname=$('#projectname').val();
 	var projectdesc=$('#projectdesc').val();
 	
 		$.ajax({  
 		     type : "POST",   
-		     url : "saveprojectdetail.html",   
+		     url : "updateProjectDetails.html",   
 		     data : "projectname=" + projectname + "&projectdesc=" + projectdesc,
 		       
 		     success : function(response) {  
-		      alert(response);   
+		    	 $("#editstatus").html(response);
+		      //alert(response);   
 		     },  
 		     error : function(e) {  
 		      alert('Error: ' + e);   

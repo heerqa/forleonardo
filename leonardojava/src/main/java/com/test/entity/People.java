@@ -6,6 +6,14 @@ public class People {
 	private String projectName;//fk
 	private String firstName;	
 	private String lastName;
+	public People(String projectName, String firstName, String lastName,
+			String completeName) {
+		super();
+		this.projectName = projectName;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.completeName = completeName;
+	}
 	private String completeName;
 	public int getId() {
 		return id;

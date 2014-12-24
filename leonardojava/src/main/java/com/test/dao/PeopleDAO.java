@@ -9,9 +9,9 @@ import com.test.entity.ProjectList;
 public interface PeopleDAO {
 	
 	public List<People> getPeopleLink(ProjectList projectList);
-	public void insertPeopleLink(People people);
+	public boolean insertPeopleLink(People people, ProjectList projectList);
 	public void updatePeopleLink(People people);
-	public void deletPeopleLink(People people);
+	public void deletPeopleLink(People people, ProjectList projectList);
 	public void deletAllPeopleLink(People people);
 	public List<People> getAllPeople();
 

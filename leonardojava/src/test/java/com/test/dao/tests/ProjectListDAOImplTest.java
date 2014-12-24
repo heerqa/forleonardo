@@ -19,7 +19,7 @@ import com.test.entity.ProjectList;
 public class ProjectListDAOImplTest {
 	
 	ProjectList projectList =new ProjectList("test2", "test desc");
-	People peopleLinked =new People("test2", "shagufta Naz");
+	People peopleLinked =new People("demo1", "zoya", "naz", "zoya naz");
 	ApplicationContext ctx=new ClassPathXmlApplicationContext("classpath:spring/application-config.xml");
 	ProjectListDAOImpl projectListDAOImpl=ctx.getBean("projectListDAOImpl", ProjectListDAOImpl.class);
 	PeopleDAOImpl peopleDAOImpl=ctx.getBean("peopleDAOImpl", PeopleDAOImpl.class);
@@ -29,10 +29,12 @@ public class ProjectListDAOImplTest {
 	
 		projectListDAOImpl.insertProjectList(projectList);
 	}
+	
 	@Ignore
 	@Test
 	public void testinsertPeopleLink(){
-		peopleDAOImpl.insertPeopleLink(peopleLinked);
+		projectList.setId(36);
+		System.out.println(peopleDAOImpl.insertPeopleLink(peopleLinked,projectList));
 	}
 	
 	@Ignore

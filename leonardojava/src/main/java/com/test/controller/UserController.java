@@ -63,17 +63,45 @@ public class UserController {
 		
 	}
 	
+	@RequestMapping(value="{id}/updateProjectDetails", method=RequestMethod.POST)
+	public @ResponseBody String updateProjectDetails(HttpServletRequest request, HttpServletResponse response,@PathVariable("id") int id){
+		ProjectList projectList=new ProjectList();
+		projectList.setId(id);
+		projectList.setProjectName(request.getParameter("projectname"));
+		projectList.setProjectDescrition(request.getParameter("projectdesc"));
+		
+		boolean status=projectListDAOImpl.updateProjectList(projectList);
+		
+		String updatestaus=null;
+		if (status) {
+			updatestaus=" The projects details are updated successfully ";
+		} else {
+			updatestaus=" There is issue with update please try again ";
+		}
+		
+		return updatestaus;
+		
+	}
+	
 	@RequestMapping(value="{id}/addprojectrouser", method=RequestMethod.POST)
 	public @ResponseBody String addProjectToUser(HttpServletRequest request, HttpServletResponse response,@PathVariable("id") int id ){
 		People people=new People();
-	
+		ProjectList projectList=new ProjectList();
+		projectList.setId(id);
 		people.setProjectName(projectListDAOImpl.getProjectList(id).getProjectName());
 		people.setCompleteName(request.getParameter("selecteuser"));
 		String[] splitname=request.getParameter("selecteuser").split(" ");
 		people.setFirstName(splitname[0]);
 		people.setLastName(splitname[1]);
-		peopleDAOImpl.insertPeopleLink(people);
-		
+		boolean status=peopleDAOImpl.insertPeopleLink(people,projectList);
+		String returntext=null;
+		if(status){
+			returntext="user added";
+		}
+		else
+		{
+			returntext="Sory could not add the user, please try again";
+		}
 		return "user added";
 		
 	}
@@ -81,10 +109,13 @@ public class UserController {
 	@RequestMapping(value="{id}/{firstName}/{lastName}/deleteuser", method=RequestMethod.GET)
 	public String removeUser(@PathVariable("id") int id, @PathVariable("firstName") String firstname,@PathVariable("lastName") String lastname){
 		People people=new People();
+		ProjectList projectList=new ProjectList();
+		projectList.setId(id);
+		
 		people.setProjectName(projectListDAOImpl.getProjectList(id).getProjectName());
 		people.setFirstName(firstname);
 		people.setLastName(lastname);
-		peopleDAOImpl.deletPeopleLink(people);
+		peopleDAOImpl.deletPeopleLink(people,projectList);
 		return "redirect:"+"/"+id+"/projectedit.html";
 		
 	}

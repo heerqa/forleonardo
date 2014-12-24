@@ -8,9 +8,14 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.test.entity.People;
 import com.test.entity.ProjectList;
@@ -21,8 +26,18 @@ public class PeopleDAOImpl implements PeopleDAO{
 	
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
+	private PlatformTransactionManager transactionManager;
+
 
 	
+	public PlatformTransactionManager getTransactionManager() {
+		return transactionManager;
+	}
+	@Autowired
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
+	}
+
 	public JdbcTemplate getJdbcTemplate() {
 		return jdbcTemplate;
 	}
@@ -53,10 +68,31 @@ public class PeopleDAOImpl implements PeopleDAO{
 	}
 
 	@Override
-	public void insertPeopleLink(People people) {
-		String sql="insert into people(projectname,firstname, lastname, completename) values(?,?,?,?)";
-		jdbcTemplate.update(sql, new Object[]{people.getProjectName(),people.getFirstName(),people.getFirstName(), people.getCompleteName()});
-	
+	public boolean insertPeopleLink(People people, ProjectList projectList) {
+		boolean transactionsaved=false;
+		TransactionDefinition def = new DefaultTransactionDefinition();
+	      TransactionStatus status = transactionManager.getTransaction(def);
+	      try{
+	    	  String sql="insert into people(projectname,firstname, lastname, completename) values(?,?,?,?)";
+	    	  jdbcTemplate.update(sql, new Object[]{people.getProjectName(),people.getFirstName(),people.getFirstName(), people.getCompleteName()});
+	    	  
+	    	 
+	    	  
+	    	  String sql2="update projectlist set linkedcount=linkedcount+1 where id=?";
+	    	  jdbcTemplate.update(sql2, new Object[]{projectList.getId()});
+	    	  
+	    	  
+	    	  transactionManager.commit(status);
+	    	
+	    	  transactionsaved=true;
+	      } catch (DataAccessException e) {
+	    	  transactionsaved=false;
+	          System.out.println("Error in creating record, rolling back");
+	          transactionManager.rollback(status);
+	          throw e;
+	          
+	       }
+	       return transactionsaved;
 		
 	}
 
@@ -67,9 +103,33 @@ public class PeopleDAOImpl implements PeopleDAO{
 	}
 
 	@Override
-	public void deletPeopleLink(People people) {
-		String sql="delete from people where projectname=? and firstname=? and lastname=?";
-		jdbcTemplate.update(sql, new Object[]{people.getProjectName(), people.getFirstName(),people.getLastName()});
+	public void deletPeopleLink(People people, ProjectList projectList) {
+		
+		TransactionDefinition def = new DefaultTransactionDefinition();
+	      TransactionStatus status = transactionManager.getTransaction(def);
+	      try{
+	    	  String sql="delete from people where projectname=? and firstname=? and lastname=?";
+	  		jdbcTemplate.update(sql, new Object[]{people.getProjectName(), people.getFirstName(),people.getLastName()});
+	  		
+	    	  
+	    	  
+	    	  String sql2="update projectlist set linkedcount=linkedcount-1 where id=?";
+	    	  jdbcTemplate.update(sql2, new Object[]{projectList.getId()});
+	    	  
+	    	  
+	    	  transactionManager.commit(status);
+	    	
+	    	  
+	      } catch (DataAccessException e) {
+	    	 
+	          System.out.println("Error in creating record, rolling back");
+	          transactionManager.rollback(status);
+	          throw e;
+	          
+	       }
+	       return;
+	       
+		
 	}
 
 	@Override
