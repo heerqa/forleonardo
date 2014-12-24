@@ -17,7 +17,9 @@ import java.util.ArrayList;
 
 
 
+
 import javax.sql.DataSource;
+
 
 
 
@@ -28,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+
+
 
 
 
@@ -48,7 +52,7 @@ public class ProjectListDAOImpl implements ProjectListDAO{
 	public PlatformTransactionManager getTransactionManager() {
 		return transactionManager;
 	}
-
+	@Autowired
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
 	}
@@ -75,10 +79,28 @@ public class ProjectListDAOImpl implements ProjectListDAO{
 	@Override
 	public List<ProjectList> getProjectList() {
 		List<ProjectList> projectList =new ArrayList<ProjectList>();
-		String sql="select * from projectlist";
+		
+		TransactionDefinition def = new DefaultTransactionDefinition();
+	      TransactionStatus status = transactionManager.getTransaction(def);
+	      try{
+	    		String sql="select * from projectlist";
+	    		
+	    		projectList=jdbcTemplate.query(sql, new ProjectListAllRowMapper());
+     
+	    		transactionManager.commit(status);
+	    	
+	    	  
+	      } catch (DataAccessException e) {
+	    	 
+	          System.out.println("Error in creating record, rolling back");
+	          transactionManager.rollback(status);
+	          throw e;
+	          
+	       }
+		/*String sql="select * from projectlist";
 		
 		projectList=jdbcTemplate.query(sql, new ProjectListAllRowMapper());
-
+*/
 		return projectList;
 	}
 	
@@ -143,7 +165,7 @@ public class ProjectListDAOImpl implements ProjectListDAO{
 		TransactionDefinition def = new DefaultTransactionDefinition();
 	      TransactionStatus status = transactionManager.getTransaction(def);
 	      try{
-	    		String sql="update projectlist set projectname=? and projectdescription=? where id=? ";
+	    		String sql="update projectlist set projectname=?,projectdescription=? where id=? ";
 	    		jdbcTemplate.update(sql, new Object[]{projectList.getProjectName(), projectList.getProjectDescrition(), projectList.getId()});
 	    			    		    	  
 	    	     
@@ -185,22 +207,88 @@ public class ProjectListDAOImpl implements ProjectListDAO{
 	@Override
 	public List<ProjectList> getProjectListWithUser() {
 		List<ProjectList> projectList =new ArrayList<ProjectList>();
-		String sql="select projectlist.id, projectlist.projectname,projectlist.projectdescription, array_to_string(array_agg(distinct people.completename),',') as completename from"  
+		
+		TransactionDefinition def = new DefaultTransactionDefinition();
+	      TransactionStatus status = transactionManager.getTransaction(def);
+	      try{
+	    		String sql="select projectlist.id, projectlist.projectname,projectlist.projectdescription, array_to_string(array_agg(distinct people.completename),',') as completename from "
+
+	    				+" projectlist inner join people on projectlist.projectname=people.projectname where projectlist.status='t' group by projectlist.id, projectlist.projectname,projectlist.projectdescription  UNION ALL select projectlist.id,projectname,projectdescription,completename from projectlist where linkedcount=0 and status='t'";
+	    		
+	    			    		    	  
+	    		projectList=jdbcTemplate.query(sql, new ProjectListRowMapper());
+
+	    	
+	    		transactionManager.commit(status);
+	    	
+	    	  
+	      } catch (DataAccessException e) {
+	    	 
+	          System.out.println("Error in creating record, rolling back");
+	          transactionManager.rollback(status);
+	          throw e;
+	          
+	       }
+	       return projectList;
+	       
+/*		String sql="select projectlist.id, projectlist.projectname,projectlist.projectdescription, array_to_string(array_agg(distinct people.completename),',') as completename from"  
 
 				+" projectlist inner join people on projectlist.projectname=people.projectname group by projectlist.id, projectlist.projectname,projectlist.projectdescription UNION ALL " 
 
 +" select projectlist.id,projectname,projectdescription,completename from projectlist where linkedcount=0";	
 		projectList=jdbcTemplate.query(sql, new ProjectListRowMapper());
 
-		return projectList;
+		return projectList;*/
 	}
 
 	@Override
 	public ProjectList getProjectList(int id) {
 		ProjectList projectList;
-		String sql="select * from projectlist where id=?";
+		
+		TransactionDefinition def = new DefaultTransactionDefinition();
+	      TransactionStatus status = transactionManager.getTransaction(def);
+	      try{
+	    	  String sql="select * from projectlist where id=?";
+	  		projectList=(ProjectList) jdbcTemplate.queryForObject(sql, new Object[]{id}, new ProjectListAllRowMapper() ); 
+	    	     
+	    		transactionManager.commit(status);
+	    	
+	    	  
+	      } catch (DataAccessException e) {
+	    	 
+	          System.out.println("Error in creating record, rolling back");
+	          transactionManager.rollback(status);
+	          throw e;
+	          
+	       }
+		/*String sql="select * from projectlist where id=?";
 		projectList=(ProjectList) jdbcTemplate.queryForObject(sql, new Object[]{id}, new ProjectListAllRowMapper() );
-		return projectList;
+		*/return projectList;
+	}
+	@Override
+	public boolean deactivateProjectList(ProjectList projectList) {
+		boolean transactionsaved=false;
+		TransactionDefinition def = new DefaultTransactionDefinition();
+	      TransactionStatus status = transactionManager.getTransaction(def);
+	      try{
+	    		String sql="update projectlist set status='f' where id=?";
+	    		jdbcTemplate.update(sql, new Object[]{ projectList.getId()});
+	    			    		    	  
+	    	     
+	    		transactionManager.commit(status);
+	    		transactionsaved=true;
+	    	  
+	      } catch (DataAccessException e) {
+	    	  
+	          System.out.println("Error in creating record, rolling back");
+	          transactionManager.rollback(status);
+	          transactionsaved=false;
+	          throw e;
+	          
+	    	  
+	       }
+	       return transactionsaved;
+	       
 	}
 
 }

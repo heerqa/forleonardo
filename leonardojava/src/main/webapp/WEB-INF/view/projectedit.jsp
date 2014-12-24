@@ -11,6 +11,7 @@
  <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
+
 <!-- Optional: Include the jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
@@ -37,7 +38,7 @@
       <!-- Username -->
       <label class="control-label"  for="projectname">Project Name</label>
       <div class="controls ">
-        <input type="text" id="projectname" name="projectname"  placeholder="${projectList.projectName}" } class="input-xlarge">
+        <input type="text" id="projectname" name="projectname"  placeholder="${projectList.projectName}" } class="input-xlarge" required>
     
       </div>
     </div>
@@ -46,20 +47,23 @@
       <!-- Username -->
       <label class="control-label"  for="projectdesc">Project Description</label>
       <div class="controls">
-        <input type="text" id="projectdesc" name="projectdesc" placeholder="${projectList.projectDescrition}" class="input-xlarge">
+        <input type="text" id="projectdesc" name="projectdesc" placeholder="${projectList.projectDescrition}" class="input-xlarge" required>
      
       </div>
     </div>
     <label class="control-label"  for="projectstatus">Status</label>
     <label class="checkbox pull-center">
-                    <input type="checkbox" value="activated">
+                    <input type="checkbox" id="activecheckbox" data-toggle="modal" data-target="#myModal"  value="activated" checked >
                     Activated
                 </label>
     <div class="control-group">
+    	<div id="activestatus">
+
+		</div>
       <!-- Button -->
       <div class="controls">
       	<br>
-        <button type="button" id="Save" class="btn btn-success" onClick=updateProjectDetails() >Edit</button>
+        <button type="button" id="Save" class="btn btn-primary" onClick=updateProjectDetails() >Edit</button>
       </div>
     </div>
   </fieldset>
@@ -95,7 +99,7 @@
 <td>
  
 <form action ="${people.firstName}/${people.lastName}/deleteuser.html">
-	<button type="submit" >Remove</button>
+	<button type="submit" class="btn btn-primary"  >Remove</button>
 </form>
 
 </td>
@@ -107,11 +111,34 @@
 
 </div>
 </div>
+
 </body> 
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">deactivate</h4>
+      </div>
+      <div class="modal-body">
+        This project won’t be listed in main page, are you sure you want to deactivated this project?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onClick="selectCheckbox()">NO</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onClick="deactivateProject()" >Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script type="text/javascript">
 
 function updateProjectDetails(){
+	var validate=validateFiles();
+	if (validate!=false) {
 	var projectname=$('#projectname').val();
 	var projectdesc=$('#projectdesc').val();
 	
@@ -128,7 +155,7 @@ function updateProjectDetails(){
 		      alert('Error: ' + e);   
 		     }  
 		    });  
-		
+	}
 }
 
 function addPeopleToProject(){
@@ -143,7 +170,9 @@ function addPeopleToProject(){
 	       
 	     success : function(response) {  
 	    	 
-	      alert(response);   
+	      //alert(response); 
+	      alert(response);
+		
 	       location.reload() 
 	     },  
 	     error : function(e) {  
@@ -151,4 +180,40 @@ function addPeopleToProject(){
 	     }  
 	    });  
 }
+
+function deactivateProject(){
+	
+	$.ajax({  
+	     type : "POST",   
+	     url : "deactivateproject.html",   
+	    
+	       
+	     success : function(response) {  
+	    	 
+	    	 $("#activestatus").html(response);  
+	      
+	     },  
+	     error : function(e) {  
+	      alert('Error: ' + e);   
+	     }  
+	    });  
+}
+
+function selectCheckbox(){
+	$('#activecheckbox').prop('checked', true);
+	
+}
+function validateFiles(){
+	var name=$('#projectname').val();
+	
+	var desc=$('#projectdesc').val();
+	
+	
+	if (name==""||desc==""||name==null ||desc==null ) {
+		alert("Please enter values in all fields"); 	
+		return false;
+	}
+}
+
+
 </script>

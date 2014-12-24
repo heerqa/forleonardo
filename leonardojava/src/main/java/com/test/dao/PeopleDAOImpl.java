@@ -60,10 +60,30 @@ public class PeopleDAOImpl implements PeopleDAO{
 	@Override
 	public List<People> getPeopleLink(ProjectList projectList) {
 		List<People> peopleLinked =new ArrayList<People>();
-		String sql="select * from people where projectname=?";
+		
+		TransactionDefinition def = new DefaultTransactionDefinition();
+	      TransactionStatus status = transactionManager.getTransaction(def);
+	      try{
+	    	  String sql="select * from people where projectname=?";
+	  		
+	  			peopleLinked=jdbcTemplate.query(sql, new Object[]{projectList.getProjectName()}, new PeopleLinkedRowMapper());
+    		    	  
+	    	     
+	    		transactionManager.commit(status);
+	    	
+	    	  
+	      } catch (DataAccessException e) {
+	    	 
+	          System.out.println("Error in creating record, rolling back");
+	          transactionManager.rollback(status);
+	          throw e;
+	          
+	       }
+	       //return;
+		/*String sql="select * from people where projectname=?";
 		
 		peopleLinked=jdbcTemplate.query(sql, new Object[]{projectList.getProjectName()}, new PeopleLinkedRowMapper());
-
+*/
 		return peopleLinked;
 	}
 

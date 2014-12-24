@@ -10,7 +10,7 @@
 <!-- Latest compiled and minified CSS -->
  <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
+ 
 <!-- Optional: Include the jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
@@ -55,12 +55,14 @@
       <!-- Button -->
       <div class="controls">
       	<br>
-        <button type="button" id="Save" class="btn btn-success" onClick="saveProjectDetails()" >Save</button>
+        <button type="button" id="Save" class="btn btn-primary" onClick="saveProjectDetails()" >Save</button>
       </div>
     </div>
   </fieldset>
 </form>
+<div id="savestatus">
 
+</div>
 
 <div>
 <br>
@@ -92,6 +94,7 @@
 
 </div>
 </div>
+
 </body> 
 
 <script type="text/javascript">
@@ -111,7 +114,8 @@ function saveProjectDetails(){
 			     data : "projectname=" + projectname + "&projectdesc=" + projectdesc,
 			       
 			     success : function(response) {  
-			      alert(response);   
+			    	 $("#savestatus").html(response);
+			      //alert(response);   
 			      
 			      location.reload();
 			     },  

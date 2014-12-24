@@ -83,6 +83,25 @@ public class UserController {
 		
 	}
 	
+	
+	@RequestMapping(value="{id}/deactivateproject", method=RequestMethod.POST)
+	public @ResponseBody String deactivateProject(HttpServletRequest request, HttpServletResponse response,@PathVariable("id") int id){
+		ProjectList projectList=new ProjectList();
+		projectList.setId(id);
+				
+		boolean status=projectListDAOImpl.deactivateProjectList(projectList);
+		
+		String updatestaus=null;
+		if (status) {
+			updatestaus=" The project is deactivated ";
+		} else {
+			updatestaus=" There is issue with update please try again ";
+		}
+		
+		return updatestaus;
+		
+	}
+	
 	@RequestMapping(value="{id}/addprojectrouser", method=RequestMethod.POST)
 	public @ResponseBody String addProjectToUser(HttpServletRequest request, HttpServletResponse response,@PathVariable("id") int id ){
 		People people=new People();

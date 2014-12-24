@@ -29,6 +29,15 @@ public class ProjectListDAOImplTest {
 	
 		projectListDAOImpl.insertProjectList(projectList);
 	}
+	@Ignore
+	@Test
+	public void testupdateProjectList(){
+		ProjectList projectList=new ProjectList();
+		projectList.setProjectName("tttt");
+		projectList.setProjectDescrition("ddddd");
+		projectList.setId(37);
+		System.out.println(projectListDAOImpl.updateProjectList(projectList));
+	}
 	
 	@Ignore
 	@Test

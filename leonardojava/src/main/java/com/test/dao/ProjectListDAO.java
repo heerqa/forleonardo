@@ -10,6 +10,8 @@ public interface ProjectListDAO {
 	public List<ProjectList> getProjectListWithUser();
 	public void insertProjectList(ProjectList projectList);
 	public boolean updateProjectList(ProjectList projectList);
+	
+	public boolean deactivateProjectList(ProjectList projectList);
 	public void deletProjectList(ProjectList projectList);
 	public void deletAllProjectList(ProjectList projectList);
 	public String getProjectList(String porjectName);
