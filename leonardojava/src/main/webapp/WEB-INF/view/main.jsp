@@ -37,7 +37,7 @@
       <!-- Username -->
       <label class="control-label"  for="projectname">Project Name</label>
       <div class="controls">
-        <input type="text" id="projectname" name="projectname"  placeholder="text" class="input-xlarge">
+        <input type="text" id="projectname" name="projectname"  placeholder="text"  class="input-xlarge" required>
     
       </div>
     </div>
@@ -46,7 +46,7 @@
       <!-- Username -->
       <label class="control-label"  for="projectdesc">Project Description</label>
       <div class="controls">
-        <input type="text" id="projectdesc" name="projectdesc" placeholder="text" class="input-xlarge">
+        <input type="text" id="projectdesc" name="projectdesc" placeholder="text"  class="input-xlarge" required>
      
       </div>
     </div>
@@ -107,24 +107,44 @@
 <script type="text/javascript">
 
 function saveProjectDetails(){
-	var projectname=$('#projectname').val();
-	var projectdesc=$('#projectdesc').val();
-	
-		$.ajax({  
-		     type : "POST",   
-		     url : "saveprojectdetail.html",   
-		     data : "projectname=" + projectname + "&projectdesc=" + projectdesc,
-		       
-		     success : function(response) {  
-		      alert(response);   
-		      
-		      location.reload();
-		     },  
-		     error : function(e) {  
-		      alert('Error: ' + e);   
-		     }  
-		    });  
+	var validate=validateFiles();
+
+	if (validate!=false) {
 		
+		
+		var projectname=$('#projectname').val();
+		var projectdesc=$('#projectdesc').val();
+		
+			$.ajax({  
+			     type : "POST",   
+			     url : "saveprojectdetail.html",   
+			     data : "projectname=" + projectname + "&projectdesc=" + projectdesc,
+			       
+			     success : function(response) {  
+			      alert(response);   
+			      
+			      location.reload();
+			     },  
+			     error : function(e) {  
+			      alert('Error: ' + e);   
+			     }  
+			    });
+
+	}
+  
+		
+}
+
+function validateFiles(){
+	var name=$('#projectname').val();
+	
+	var desc=$('#projectdesc').val();
+	
+	
+	if (name==""||desc==""||name==null ||desc==null ) {
+		alert("Please enter values all fields"); 	
+		return false;
+	}
 }
 
 </script>
