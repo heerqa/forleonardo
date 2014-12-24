@@ -82,7 +82,9 @@ public class ProjectListDAOImpl implements ProjectListDAO{
 			projectList.setId(rs.getInt("id"));
 			projectList.setProjectName(rs.getString("projectname"));
 			projectList.setProjectDescrition(rs.getString("projectdescription"));
-			projectList.setAll_users(rs.getString("all_users"));
+			//projectList.setAll_users(rs.getString("all_users"));
+			projectList.setCompletename(rs.getString("completename"));
+			
 			
 			return projectList;
 		}
@@ -124,12 +126,7 @@ public class ProjectListDAOImpl implements ProjectListDAO{
 	@Override
 	public List<ProjectList> getProjectListWithUser() {
 		List<ProjectList> projectList =new ArrayList<ProjectList>();
-		String sql="select projectlist.projectname,projectlist.projectdescription,projectlist.id, array_to_string(array_agg(distinct people.completename),',') as all_users from " 
-
-		+"projectlist inner join people on projectlist.projectname=people.projectname where status='t' group by "
-
-		+"projectlist.projectname,projectlist.projectdescription,projectlist.id";
-		
+		String sql="select projectlist.id, projectlist.projectname,projectlist.projectdescription, array_to_string(array_agg(distinct people.completename),',') as completename from projectlist inner join people on projectlist.projectname=people.projectname group by projectlist.id, projectlist.projectname,projectlist.projectdescription UNION ALL select projectlist.id,projectname,projectdescription,completename from projectlist";	
 		projectList=jdbcTemplate.query(sql, new ProjectListRowMapper());
 
 		return projectList;

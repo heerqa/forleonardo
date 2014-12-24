@@ -17,7 +17,24 @@ public class ProjectList {
 	private boolean status;
 	
 	private String all_users;
+	private String completename;
 	
+	public ProjectList(int id, String projectName, String projectDescrition,
+			boolean status, String all_users, String compeletename) {
+		super();
+		this.id = id;
+		this.projectName = projectName;
+		this.projectDescrition = projectDescrition;
+		this.status = status;
+		this.all_users = all_users;
+		this.completename = compeletename;
+	}
+	public String getCompletename() {
+		return completename;
+	}
+	public void setCompletename(String compeletename) {
+		this.completename = compeletename;
+	}
 	public String getAll_users() {
 		return all_users;
 	}

@@ -34,10 +34,8 @@ public class UserController {
 	@RequestMapping("/home")
 	public String mainView(Model model){
 		List<ProjectList> projectList=projectListDAOImpl.getProjectListWithUser();
-		List<ProjectList> projectListall=projectListDAOImpl.getProjectList();
 		model.addAttribute("projectList", projectList);	
-		model.addAttribute("projectListall", projectListall);
-		
+				
 		return "main";
 		
 	}
