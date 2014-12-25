@@ -50,6 +50,9 @@
      
       </div>
     </div>
+    <div id="errormsg">
+    
+    </div>
     
     <div class="control-group">
       <!-- Button -->
@@ -136,7 +139,7 @@ function validateFiles(){
 	
 	
 	if (name==""||desc==""||name==null ||desc==null ) {
-		alert("Please enter values all fields"); 	
+		$("#errormsg").html("Both fields are mandatory").css('color', 'red');
 		return false;
 	}
 }

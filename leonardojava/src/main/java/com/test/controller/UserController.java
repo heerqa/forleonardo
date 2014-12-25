@@ -66,11 +66,13 @@ public class UserController {
 	@RequestMapping(value="{id}/updateProjectDetails", method=RequestMethod.POST)
 	public @ResponseBody String updateProjectDetails(HttpServletRequest request, HttpServletResponse response,@PathVariable("id") int id){
 		ProjectList projectList=new ProjectList();
+		ProjectList projectListexistin=projectListDAOImpl.getProjectList(id);
+		
 		projectList.setId(id);
 		projectList.setProjectName(request.getParameter("projectname"));
 		projectList.setProjectDescrition(request.getParameter("projectdesc"));
 		
-		boolean status=projectListDAOImpl.updateProjectList(projectList);
+		boolean status=projectListDAOImpl.updateProjectList(projectList, projectListexistin );
 		
 		String updatestaus=null;
 		if (status) {
@@ -105,6 +107,7 @@ public class UserController {
 	@RequestMapping(value="{id}/addprojectrouser", method=RequestMethod.POST)
 	public @ResponseBody String addProjectToUser(HttpServletRequest request, HttpServletResponse response,@PathVariable("id") int id ){
 		People people=new People();
+		String completename=(request.getParameter("selecteuser"));
 		ProjectList projectList=new ProjectList();
 		projectList.setId(id);
 		people.setProjectName(projectListDAOImpl.getProjectList(id).getProjectName());
@@ -115,13 +118,13 @@ public class UserController {
 		boolean status=peopleDAOImpl.insertPeopleLink(people,projectList);
 		String returntext=null;
 		if(status){
-			returntext="user added";
+			returntext=completename +" has been added to the project";
 		}
 		else
 		{
 			returntext="Sory could not add the user, please try again";
 		}
-		return "user added";
+		return returntext;
 		
 	}
 	

@@ -18,7 +18,9 @@ import java.util.ArrayList;
 
 
 
+
 import javax.sql.DataSource;
+
 
 
 
@@ -40,6 +42,8 @@ import org.springframework.jdbc.core.RowMapper;
 
 
 
+
+import com.test.entity.People;
 import com.test.entity.ProjectList;
 
 @Repository
@@ -160,13 +164,16 @@ public class ProjectListDAOImpl implements ProjectListDAO{
 	}
 
 	@Override
-	public boolean updateProjectList(ProjectList projectList) {
+	public boolean updateProjectList(ProjectList projectList, ProjectList projectListcurrent) {
 		boolean transactionsaved=false;
 		TransactionDefinition def = new DefaultTransactionDefinition();
 	      TransactionStatus status = transactionManager.getTransaction(def);
 	      try{
 	    		String sql="update projectlist set projectname=?,projectdescription=? where id=? ";
 	    		jdbcTemplate.update(sql, new Object[]{projectList.getProjectName(), projectList.getProjectDescrition(), projectList.getId()});
+	    		
+	    		String sql2="update people set projectname=? where projectname=? ";
+	    		jdbcTemplate.update(sql2, new Object[]{projectList.getProjectName(), projectListcurrent.getProjectName()});
 	    			    		    	  
 	    	     
 	    		transactionManager.commit(status);

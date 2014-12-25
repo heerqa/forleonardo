@@ -33,10 +33,11 @@ public class ProjectListDAOImplTest {
 	@Test
 	public void testupdateProjectList(){
 		ProjectList projectList=new ProjectList();
+		ProjectList projectListcuurent=new ProjectList();
 		projectList.setProjectName("tttt");
 		projectList.setProjectDescrition("ddddd");
 		projectList.setId(37);
-		System.out.println(projectListDAOImpl.updateProjectList(projectList));
+		System.out.println(projectListDAOImpl.updateProjectList(projectList, projectListcuurent));
 	}
 	
 	@Ignore

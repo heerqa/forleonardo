@@ -29,6 +29,11 @@
  </head>
 <body>
 <div class="container">
+<div class="alert alert-warning alert-dismissible" id="alert1" role="alert" hidden>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong id ="useradded"></strong>
+</div>
+
 <form class="form-horizontal" action='' method="POST">
   <fieldset>
     <div id="legend">
@@ -37,6 +42,7 @@
     <div class="control-group">
       <!-- Username -->
       <label class="control-label"  for="projectname">Project Name</label>
+      
       <div class="controls ">
         <input type="text" id="projectname" name="projectname"  placeholder="${projectList.projectName}" } class="input-xlarge" required>
     
@@ -50,6 +56,9 @@
         <input type="text" id="projectdesc" name="projectdesc" placeholder="${projectList.projectDescrition}" class="input-xlarge" required>
      
       </div>
+      <div id="errormsg">
+    
+    </div>
     </div>
     <label class="control-label"  for="projectstatus">Status</label>
     <label class="checkbox pull-center">
@@ -74,14 +83,19 @@
 </div>
 <div>
 <br>
+<a href="/home.html" class="btn btn-default btn-sm pull-right">
+          <span class="glyphicon glyphicon-share-alt"></span> Main Page
+  </a>
  <legend class="">People Linked to the project</legend>
+ 
+ 
 <table class="table table-hover table-striped table-bordered">
 <thead>
 <tr>
 
 <th>Complete Name</th>
 <th>
-<select class="form-control" onchange="addPeopleToProject()" id="userlist">
+<select class="form-control" onchange="addPeopleToProject()"  id="userlist">
  <option value="">Add People to this project</option>
  <c:forEach items="${allpeople}" var="allpeople">
         <option value="${allpeople.completeName}">${allpeople.completeName}</option>
@@ -133,6 +147,26 @@
   </div>
 </div>
 
+<!-- The notification modal -->
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">User Added</h4>
+      </div>
+      <div class="modal-body">
+        <div id="useradded">
+			</div>
+      </div>
+      <div class="modal-footer">
+     
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onClick="reloadPage()" >OK</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
 
@@ -171,9 +205,11 @@ function addPeopleToProject(){
 	     success : function(response) {  
 	    	 
 	      //alert(response); 
-	      alert(response);
-		
-	       location.reload() 
+	       $("#alert1").css('display', 'block');
+	      $("#useradded").html(response)
+	      //alert(response);
+	      location.reload() ;
+	      
 	     },  
 	     error : function(e) {  
 	      alert('Error: ' + e);   
@@ -181,6 +217,10 @@ function addPeopleToProject(){
 	    });  
 }
 
+function reloadPage(){
+	 location.reload() ;
+	
+}
 function deactivateProject(){
 	
 	$.ajax({  
@@ -210,7 +250,7 @@ function validateFiles(){
 	
 	
 	if (name==""||desc==""||name==null ||desc==null ) {
-		alert("Please enter values in all fields"); 	
+		$("#errormsg").html("Both fields are mandatory").css('color', 'red');
 		return false;
 	}
 }
