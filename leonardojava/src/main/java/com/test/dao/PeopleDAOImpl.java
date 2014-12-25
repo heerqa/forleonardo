@@ -64,7 +64,7 @@ public class PeopleDAOImpl implements PeopleDAO{
 		TransactionDefinition def = new DefaultTransactionDefinition();
 	      TransactionStatus status = transactionManager.getTransaction(def);
 	      try{
-	    	  String sql="select * from people where projectname=?";
+	    	  String sql="select distinct firstname,lastname, completename from people where projectname=?";
 	  		
 	  			peopleLinked=jdbcTemplate.query(sql, new Object[]{projectList.getProjectName()}, new PeopleLinkedRowMapper());
     		    	  
@@ -164,7 +164,7 @@ public class PeopleDAOImpl implements PeopleDAO{
 
 		public People mapRow(ResultSet rs, int rowNum) throws SQLException {
 			People peopleLinked=new People();
-			peopleLinked.setProjectName(rs.getString("projectname"));
+			//peopleLinked.setProjectName(rs.getString("projectname"));
 			peopleLinked.setFirstName(rs.getString("firstname"));
 			peopleLinked.setLastName(rs.getString("lastname"));
 			peopleLinked.setCompleteName(rs.getString("completename"));
